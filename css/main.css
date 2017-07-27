@@ -1,0 +1,167 @@
+
+body{
+    background-color: floralwhite;
+    box-sizing: border-box;
+}
+
+nav{
+    width: 100%;
+    background-image: url(../img/repeat_quote.jpg);
+    height: 80px;
+}
+
+nav ul{
+
+    display: inline-block;
+    margin-left: 50px;
+    height: 100%;
+}
+
+nav ul li{
+    display: inline-block;
+    margin-right: 25px;
+    height: 100%;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+nav ul li:hover{
+    background-color: #fff;
+}
+
+nav ul li a{
+
+    padding-right: 20px;
+    padding-left: 20px;
+    display: inline-block;
+    width: auto;
+    height: 100%;
+    font-size: 20px;
+    line-height: 80px;
+    outline: none;
+    color: #fff;
+    transition: all .3s;
+}
+
+nav ul li a:hover{
+    text-decoration: none;
+    color: #31b0d5;
+}
+
+
+
+
+
+
+
+.hide{
+    display: none;
+}
+
+#random_actions_title{
+    display: inline-block;
+}
+
+#random_action{
+    margin-top: 30px;
+    height: 120px;
+    width: 90%;
+    border-radius: 20px;
+    box-shadow: 1px 2px 4px rgba(0,0,0,.2);
+    background-color: #fff;
+    display: inline-block;
+}
+
+#random_action h3{
+    color: darkgrey;
+}
+
+#random_action #action{
+    color:#31b0d5;
+}
+
+.fa-question-circle{
+    position: absolute;
+    top: 10px;
+    color:#31b0d5;
+    font-size: 20px;
+}
+
+#action_form #action_input{
+    display: inline-block;
+    width: 60%;
+ }
+
+#action_form #ratio_input{
+    width: 30%;
+    display: inline-block;
+}
+
+
+#action_form #add_new_action{
+    margin-top: 7px;
+}
+
+#random_action_area{
+    text-align: center;
+}
+
+.btn{
+    margin: 10px;
+}
+
+#timer{
+    font-size: 20px;
+    color: #31b0d5;
+}
+
+#points_for_day{
+    margin-top: 100px;
+}
+
+#actions_ul{
+    /*margin-right: 35px;*/
+}
+
+#actions_ul li{
+    list-style-type:none;
+    box-sizing: border-box;
+    background-color: #fff;
+
+}
+
+#actions_ul li span  {
+    padding: 6px;
+    display: block;
+    position: relative;
+}
+
+#actions_ul li  .fa-trash{
+    display: inline-block;
+    color: #f44242;
+    position: relative;
+    height: 100%;
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#actions_ul li:nth-child(even) {
+    position: relative;
+    background-color: lightblue;
+}
+
+.points{
+    display: inline-block;
+    float: right;
+    margin-right: 70px;
+    color: #fff;
+}
+
+#points_for_day{
+    font-size: 1.3em;
+    color:#f44242;
+}
+
+
+
