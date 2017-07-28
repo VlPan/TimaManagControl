@@ -1,14 +1,9 @@
 var Mission = function(name, points){
     this.name = name;
     this.points =  points;
-    var date;
-    
-    this.setDate = function(_date){
-        date = _date;
-    };
-
-    this.getDate = function(){
-        return date;
-    };
-    
+    this.date = new Date();
+    this.day = this.date.getDay();
+    this.month = this.date.getMonth();
+    this.year = this.date.getFullYear();
+    this.hours = this.date.getHours();
 }

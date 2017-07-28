@@ -23,7 +23,7 @@
     <ul>
         <li><a href="">Мисии</a></li>
         <li><a href="">Random</a></li>
-        <li><a href="">История</a></li>
+        <li><a href="history.html">История</a></li>
     </ul>
 
     <h4 class="points">Очки за день: <span id="points_for_day"></span></h4>
@@ -34,7 +34,7 @@
 
 
 
-    <div class="col-lg-9 col-md-8 col-sm-8 col-xs-12">
+    <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
     <div id="random_action_area">
         <div id="random_action">
             <h3>random action here..</h3>
@@ -58,15 +58,21 @@
         <div class="btn btn-default hide" id="normal_diff">Нормально</div>
         <div class="btn btn-default hide" id="hard_diff">Тяжело</div>
     </div>
+
+        <!--<div class="well alert-zone">-->
+            <!--<h2>Зона уведомлений</h2>-->
+            <!--<span id="red_alert"></span>-->
+        <!--</div>-->
 </div>
 
-    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+    <div class="col-lg-5 col-md-4 col-sm-4 col-xs-12">
 
         <h3 id="random_actions_title">Случайные дела</h3><i class="fa fa-question-circle" aria-hidden="true"></i>
         <form action="" id="action_form">
             <input class="form-control" type="text" placeholder = "Введите дело" id="action_input">
-            <input class="form-control" type="number" placeholder = "К-эф" id="ratio_input">
+            <input class="form-control" type="number" placeholder = "К-эф" id="ratio_input" value = "3">
             <button class="btn btn-success" id="add_new_action">добавить</button>
+
         </form>
         <hr>
         <ul id="actions_ul">
@@ -78,13 +84,13 @@
 </div>
 
     <div class="row">
-        <div class="col-lg-12">
-
-
+        <div class="col-lg-7">
         </div>
     </div>
 </div>
 
+
+<script src="test.js"></script>
 <script src="js/stopwatch.js"></script>
 <script src="jquery/jquery-3.2.1.min.js"></script>
 <script src="js/Day.js"></script>
