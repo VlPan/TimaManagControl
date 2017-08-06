@@ -76,6 +76,7 @@ nav ul li a:hover{
     font-size: 20px;
     line-height: 30px;
     margin: 0;
+    cursor: pointer;
 
 }
 
@@ -96,7 +97,7 @@ nav ul li a:hover{
     margin: 0;
     background-color:#8bcddd;
     text-align: center;
-    font-size: 40px;
+    font-size: 25px;
     margin-bottom: 25px;
 
 }
@@ -119,3 +120,8 @@ nav ul li a:hover{
     font-size: 40px;
 }
 
+.mission{
+    color: orangered;
+    font-size: 12px;
+    margin-right: 10px;
+}

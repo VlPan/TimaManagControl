@@ -1,9 +1,8 @@
-
 // При запуски программа создает обьект дня, что бы сравнить его с последним созданным днем.
 // Если даты создания дней совподают, то очки за день записываются в последний день в массиве дней.
 var day = new Day();
 var days = []; // На случай если мы впервые зашли в прорамму
-
+var passedTimeArr;
 // Переменные, которым будут присвоины значения после того как пользователь укажит сложность и концентрацию
 var difficulty;
 var concentration;
@@ -11,15 +10,22 @@ var concentration;
 // Взять все созданные ранее дела либо если их нет вернуть пустой массив
 var actions = JSON.parse(localStorage.getItem("actions")) || [];
 
+// Взять все созданные ранее задания либо если их нет вернуть пустой массив
+var missions = JSON.parse(localStorage.getItem("missions")) || [];
+
 // Время потраченное на выполнение задания. Рассчитывается таймером
 var passedTime;
 
 // Отбираем html элемент где будет размещен таймер и Создаем обьект таймер(watch). Исходники кода в файле stopwatch.js.
 var timer = document.getElementById("timer");
-var watch = new StopWatch(timer); 
+var watch = new StopWatch(timer);
 
 // Область где будут сохраняться все созданные пользователем задания
 var actionsResult = document.getElementById('actions_ul');
+
+
+// Область где будут сохраняться все созданные пользователем мисии
+var missionsResult = document.getElementById('missions_ul');
 
 // Область в которую выводится случайное задание
 var action_text = document.getElementById("action");
@@ -34,6 +40,9 @@ var difTitle = document.getElementById("diff");
 
 //Кнопка для добавления новых заданий
 var addNewAction = document.getElementById("add_new_action").addEventListener("click", saveActions);
+
+//Кнопка для добавления новых миссий
+var addNewMission = document.getElementById("add_new_mission").addEventListener("click", saveMissions);
 
 
 // Кнопка для вывода случайного дела в облость action_text
@@ -90,24 +99,26 @@ hardDiff.addEventListener("click", hardDifficulties);
 
 // Подсказка при нажатии на вопросик
 
-var prompt = document.getElementsByClassName("fa-question-circle")[0].addEventListener("click",function(){
-   alert("С помощью этого приложения вы можете отцифровать свою дейстельность! Вам нужно придумать дела, которые будут приближать" +
-       " вас к выполнению вашей цели и задать им коэффициенты важности от 1 до 6 - Вы можете сделать это в разделе " +
-       " Случайные дела. После того как вы закончите просто нажмите кнопку НАЧАТЬ для случаного выбора дйстельности. Вы также можете" +
-       " Выбрать дело самостоятельно (Пока не реализовано)");
+var prompt = document.getElementsByClassName("fa-question-circle")[0].addEventListener("click", function () {
+    alert("С помощью этого приложения вы можете отцифровать свою дейстельность! Вам нужно придумать дела, которые будут приближать" +
+        " вас к выполнению вашей цели и задать им коэффициенты важности от 1 до 6 - Вы можете сделать это в разделе " +
+        " Случайные дела. После того как вы закончите просто нажмите кнопку НАЧАТЬ для случаного выбора дйстельности. Вы также можете" +
+        " Выбрать дело самостоятельно (Пока не реализовано)");
 });
 
 var actionsLi = document.getElementsByClassName("fa-caret-right"); // Выбераем маленькие синие стрелки
 
 
-for(var i = 0 ; i< actionsLi.length; i++){ // Добавляем listener ко всем стрелкам
+for (var i = 0; i < actionsLi.length; i++) { // Добавляем listener ко всем стрелкам
     console.log("sdsa");
-    actionsLi[i].addEventListener('click',displayOne());
+    actionsLi[i].addEventListener('click', displayOne());
 }
 
-function displayOne(name){ // Производим дело из списка (не рандом)
+function displayOne(name) { // Производим дело из списка (не рандом)
+    console.log(name);
     displayAction(name)
 }
+
 
 
 // Зона для вывода уведомлений
@@ -118,12 +129,11 @@ function displayOne(name){ // Производим дело из списка (�
 function saveActions(e) {
 
     // Извлекаем Имя и коээфициент значимости задания
-    var actionName = document.getElementById("action_input").value;
-    var actionRatio = document.getElementById("ratio_input").value;
+    var actionName = document.getElementById("action_input").value.toLowerCase();
+    var actionRatio = document.getElementById("ratio_input").value.toLowerCase();
     actionRatio = parseInt(actionRatio); // Перевести в число
-    
-    
-    
+
+
     // Валидация : оба поля должны быть заполнены и коэф : (1..6)
     if (!actionName || !actionRatio) {
         alert("Вы не ввели название дела или весовой коэффициент \n");
@@ -136,41 +146,91 @@ function saveActions(e) {
         return 0;
     }
 
-    var exit  = false;
+    var exit = false;
     actions.forEach(function (item) {
         if (item.name === actionName) {
-            actions = JSON.parse(localStorage.getItem("actions")) || [];
+            // actions = JSON.parse(localStorage.getItem("actions")) || [];
             alert("Вы уже добавили такое дело. Вы можете вызвать его напрямую из списка дел (Пока не реализовано)");
             exit = true; // Выйти из функции saveActions а не forEach
         }
     });
-    if(exit) return 0;
-        // Создаем новое задание
-        var action = new Action(actionName, actionRatio);
+    if (exit) return 0;
+    // Создаем новое задание
+    var action = new Action(actionName, actionRatio);
 
-        // Если в пямяти нету других заданий то создаем массив заданий, который будут зранить обьекты задания
-        if (localStorage.getItem("actions") === null) {
-            actions = [];
-            actions.push(action);
-            // Занести массив в локальную память
-            localStorage.setItem('actions', JSON.stringify(actions));
-        } else {
-            // Если в памяти есть другие задания то берем массив и доьавляем новое задания, затем сохроням массив обратно
-            actions = JSON.parse(localStorage.getItem("actions"));
-            actions.push(action);
-            localStorage.setItem('actions', JSON.stringify(actions));
+    // Если в пямяти нету других заданий то создаем массив заданий, который будут зранить обьекты задания
+    if (localStorage.getItem("actions") === null) {
+        actions = [];
+        actions.push(action);
+        // Занести массив в локальную память
+        localStorage.setItem('actions', JSON.stringify(actions));
+    } else {
+        // Если в памяти есть другие задания то берем массив и доьавляем новое задания, затем сохроням массив обратно
+        actions = JSON.parse(localStorage.getItem("actions"));
+        actions.push(action);
+        localStorage.setItem('actions', JSON.stringify(actions));
+    }
+
+    document.getElementById('action_form').reset();
+    e.preventDefault();
+
+    // Удалить все задания из облости заданий - внесено в функцию fetchActions
+    //actionsResult.innerHTML = '';
+
+    // Сново вывести все заданий, включая только что добавленное
+    fetchActions();
+
+
+}
+
+function saveMissions(e) {
+
+    // Извлекаем Имя и коээфициент значимости задания
+    var missionName = document.getElementById("mission_input").value.toLowerCase();
+    var pointsForMission = document.getElementById("points_input").value.toLowerCase();
+    pointsForMission = parseInt(pointsForMission); // Перевести в число
+
+
+    // Валидация : оба поля должны быть заполнены и коэф : (1..6)
+    if (!missionName || !pointsForMission) {
+        alert("Вы не ввели название мисси или вколичетсво очков за нее \n");
+        return 0;
+    }
+
+
+    var exit = false;
+    missions.forEach(function (item) {
+        if (item.name === missionName) {
+            // missions = JSON.parse(localStorage.getItem("actions")) || [];
+            alert("Вы уже добавили такую миссию");
+            exit = true; // Выйти из функции saveActions а не forEach
         }
+    });
+    if (exit) return 0;
+    // Создаем новое задание
+    var mission = new Mission(missionName, pointsForMission);
 
-        document.getElementById('action_form').reset();
-        e.preventDefault();
+    // Если в пямяти нету других заданий то создаем массив заданий, который будут зранить обьекты задания
+    if (localStorage.getItem("missions") === null) {
+        missions = [];
+        missions.push(mission);
+        // Занести массив в локальную память
+        localStorage.setItem('missions', JSON.stringify(missions));
+    } else {
+        // Если в памяти есть другие задания то берем массив и доьавляем новое задания, затем сохроням массив обратно
+        missions = JSON.parse(localStorage.getItem("missions"));
+        missions.push(mission);
+        localStorage.setItem('missions', JSON.stringify(missions));
+    }
 
-        // Удалить все задания из облости заданий - внесено в функцию fetchActions
-        //actionsResult.innerHTML = '';
+    document.getElementById('mission_form').reset();
+    e.preventDefault();
 
-        // Сново вывести все заданий, включая только что добавленное
-        fetchActions();
+    // Удалить все задания из облости заданий - внесено в функцию fetchActions
+    //actionsResult.innerHTML = '';
 
-
+    // Сново вывести все заданий, включая только что добавленное
+    fetchMissions();
 }
 
 
@@ -188,13 +248,21 @@ function unhide() {
     }
 }
 
+function fetchInformation() {
+    fetchActions();
+    fetchMissions();
+}
+
 // Вывести все дела
 function fetchActions() {
     actionsResult.innerHTML = '';
-
+    console.log(missions);
     for (var i = 0; i < actions.length; i++) {
         var name = actions[i].name;
-        actionsResult.innerHTML += ' <li><span class = "actions_li">' + name +'<i class="fa fa-caret-right" aria-hidden="true" onclick="displayOne(\'' + name + '\')"></i>'+ '<i class="fa fa-trash" onclick="deleteAction(\'' + name + '\')" aria-hidden="true"></i></span></li>';
+        var ratio = actions[i].importance;
+        actionsResult.innerHTML += ' <li><span class = "actions_li">' + '<div class="action_name_li">' + name + '</div>' + '<i class="fa fa-caret-right" ' +
+            'aria-hidden="true" onclick="displayOne(\'' + name + '\')"></i><span class="action_ratio">' + ratio + '</span>' + '<i class="fa fa-trash" ' +
+            'onclick="deleteAction(\'' + name + '\')" aria-hidden="true"></i></span></li>';
     }
 
 }
@@ -206,24 +274,78 @@ function deleteAction(name) { // Удаляет дело по его имени 
         }
     });
     localStorage.setItem("actions", JSON.stringify(actions));
-   // actionsResult.innerHTML = "";
+    actionsResult.innerHTML = "";
     fetchActions();
 }
 
+function fetchMissions() {
+    missionsResult.innerHTML = '';
+    console.log(missions);
+    for (var i = 0; i < missions.length; i++) {
+        var name = missions[i].name;
+        var pointsForMission = missions[i].points;
+        missionsResult.innerHTML += ' <li><span class = "missions_li">' + '<div class="mission_name_li">' + name + '</div>' + '<i class="fa fa-check" ' +
+            'aria-hidden="true" onclick="completeMission(\'' + name + '\')"></i><span class="mission_points">' + pointsForMission + '</span>' + '<i class="fa fa-trash" ' +
+            'onclick="deleteMission(\'' + name + '\')" aria-hidden="true"></i></span></li>';
+    }
+
+}
+
+function deleteMission(name) { // Удаляет дело по его имени (тк одинаковых имен быть не может)
+    missions.forEach(function (item, i) {
+        if (item.name === name) {
+            missions.splice(i, 1);
+        }
+    });
+    localStorage.setItem("missions", JSON.stringify(missions));
+    missionsResult.innerHTML = "";
+    fetchMissions();
+}
+
+function completeMission(name) {
+
+
+    for (var i = 0; i < missions.length; i++) {
+        if (missions[i].name === name) {
+            var points = missions[i].points;
+        }
+    }
+    day.missionHistory.push(name); // Добавить миссию в историю тек дня
+    days = JSON.parse(localStorage.getItem("days"));
+    console.log(days);
+    console.log(day);
+    localStorage.setItem("days", JSON.stringify(days));
+    day.points += points; // Добавить очки
+    days.pop();
+    // Перед тем как занести новый день нужно убрать старый, так как они имеют одинаковую дату.
+    // т.е что бы избежать дублирования одинаковых дней. 1 день - 1 обьект
+    days.push(day);
+    localStorage.setItem("days", JSON.stringify(days));
+    // Обновляем количетсво очков видимое пользователю на странице
+    updatePoints();
+    deleteMission(name);
+}
+
+
 // Вывести имя лучайного задания
 function displayAction(name) {
+
+    console.log(name);
     if (!actions) {
-     alert("Сначала нужно добавить хотя бы одно случайное дело!");
+        alert("Сначала нужно добавить хотя бы одно случайное дело!");
         return false;
     }
 
     var action_text = document.getElementById("action");
 
-    if(typeof name === String){
+    if (typeof name === 'string' || name instanceof String) {
         action_text.textContent = name;
+        console.log(name);
     }
-    else{
-        var randomNumber = Math.floor(getRandomNumber(0, actions.length - 1));
+
+    else {
+        var randomNumber = getRandomNumber(0, actions.length - 1);
+        console.log(randomNumber);
         var randomElName = actions[randomNumber].name;
         action_text.textContent = randomElName;
     }
@@ -237,7 +359,7 @@ function getRandomNumber(min, max) {
 
 // Для кнопки пропустить дело
 function skipAction() {
-    var randomNumber = getRandomNumber(0, actions.length);
+    var randomNumber = getRandomNumber(0, actions.length - 1);
     var randomElName = actions[randomNumber].name;
     action_text.textContent = randomElName;
 
@@ -262,7 +384,12 @@ function startTimer() {
 // Завершить Дело
 function endAction() {
 
-    passedTime = parseInt(timer.innerHTML); // взять первые 2 числа со строки до 99 минт
+    // passedTime = parseInt(timer.innerHTML);
+    //взять первые 2 числа со строки до 99 минт
+
+    passedTime = timer.innerHTML;
+    passedTimeArr = passedTime.split(".");
+    console.log(passedTimeArr);
     watch.reset();
     watch.stop();
 
@@ -279,7 +406,7 @@ function endAction() {
             days.pop();
             days.push(day);
             console.log(day);
-            localStorage.setItem("days",JSON.stringify(days));
+            localStorage.setItem("days", JSON.stringify(days));
         }
     }
 
@@ -291,7 +418,7 @@ function endAction() {
 
 }
 
- // Установка концентрации
+// Установка концентрации
 function badAction() {
     concentration = 0.5;
     hide(bad, normal, good, great);
@@ -318,10 +445,16 @@ function greatAction() {
 }
 
 
-// Финальная кнопка - установка сложности
-function easyDifficulties() {
-    difficulty = 0.5;
-    day.points += difficulty * concentration * passedTime * (getRatioOfCurrentAction() / 2); // Расчет по формуле
+
+function calculatePoints(){
+     if(parseInt(passedTimeArr[0]) !== 0){
+        day.points += difficulty * concentration *  (( parseInt(passedTimeArr[0]) * 60)
+            +  parseInt(passedTimeArr[1])) * (getRatioOfCurrentAction() / 2); // Расчет по формуле
+    }else{
+        day.points += difficulty * concentration
+            *  parseInt(passedTimeArr[1]) * (getRatioOfCurrentAction() / 2); // Расчет по формуле
+    }
+
 
     days.pop();
     // Перед тем как занести новый день нужно убрать старый, так как они имеют одинаковую дату.
@@ -335,38 +468,25 @@ function easyDifficulties() {
     updatePoints();
 }
 
+// Финальная кнопка - установка сложности
+function easyDifficulties() {
+    difficulty = 0.5;
+    calculatePoints();
+}
+
 function normalDifficulties() {
     difficulty = 1;
-    day.points += difficulty * concentration * passedTime * getRatioOfCurrentAction();
-    days.pop();
-    // Перед тем как занести новый день нужно убрать старый, так как они имеют одинаковую дату.
-    // т.е что бы избежать дублирования одинаковых дней. 1 день - 1 обьект
-    days.push(day);
-    localStorage.setItem("days", JSON.stringify(days));
-    console.log(day.points);
-    hide(bad, normal, good, great, concentrationDescription, easyDiff, normalDiff, hardDiff, difTitle);
-    unhide(start);
-    updatePoints();
+    calculatePoints();
 }
 
 function hardDifficulties() {
     difficulty = 1.7;
-    day.points += difficulty * concentration * passedTime * getRatioOfCurrentAction();
-
-    days.pop();
-    // Перед тем как занести новый день нужно убрать старый, так как они имеют одинаковую дату.
-    // т.е что бы избежать дублирования одинаковых дней. 1 день - 1 обьект
-    days.push(day);
-    localStorage.setItem("days", JSON.stringify(days));
-    console.log(day.points);
-    hide(bad, normal, good, great, concentrationDescription, easyDiff, normalDiff, hardDiff, difTitle);
-    unhide(start);
-    updatePoints();
+    calculatePoints();
 }
 
 
 // Узнать коэффициет важности данного дела
-function getRatioOfCurrentAction(){
+function getRatioOfCurrentAction() {
     for (var i = 0; i < actions.length; i++) {
         if (actions[i].name = action_text.textContent) {
             return actions[i].importance;
@@ -376,10 +496,9 @@ function getRatioOfCurrentAction(){
 }
 
 // Обновить количество очков видимое пользователю
-function updatePoints(){
+function updatePoints() {
     pointsForDay.textContent = Math.round(day.points);
 }
-
 
 
 // САМОВЫЗЫВАЮШЕЕСЯ фун для сравнения прошлого дня с текущем. Если это одинаковые дни то пополнять

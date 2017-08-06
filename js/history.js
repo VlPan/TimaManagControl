@@ -14,16 +14,16 @@ function fetchDays(){
     var days = JSON.parse(localStorage.getItem("days"));
     pointsForDay.textContent = Math.round(days[days.length - 1].points);
     dayEls.innerHTML = '';
-
+    days.reverse();
 
     for (var i = 0; i < days.length; i++) {
 
 
-        console.log(days[i]);
         var date = days[i].date;
         var points = Math.round(days[i].points);
-        var history = days[i].history;
-
+        var history = days[i].history.reverse();
+        var missionHistory = days[i].missionHistory.reverse();
+        console.log(missionHistory);
         var year = date[0];
         var month = date[1];
         var day = date[2];
@@ -32,7 +32,7 @@ function fetchDays(){
             month = "0" + month;
         }
         if(day < 9){
-            month = "0" + month;
+            day = "0" + day;
         }
 
         daysList.innerHTML +=
@@ -53,7 +53,10 @@ function fetchDays(){
             ulHistory[i].innerHTML += '<li>' + history[y] + '</li>';
         }
 
+        for(var y2 = 0; y2 <  missionHistory.length; y2++){
 
+            ulHistory[i].innerHTML += '<li> <span class="mission">' + "< mission >" +'</span>' + missionHistory[y2] + '</li>';
+        }
     }
 
 

@@ -58,7 +58,7 @@ nav ul li a:hover{
     display: none;
 }
 
-#random_actions_title{
+#random_actions_title, #mission_title{
     display: inline-block;
 }
 
@@ -91,6 +91,7 @@ nav ul li a:hover{
 #action_form #action_input{
     display: inline-block;
     width: 60%;
+    overflow: auto;
  }
 
 #action_form #ratio_input{
@@ -98,38 +99,62 @@ nav ul li a:hover{
     display: inline-block;
 }
 
-
-#action_form #add_new_action{
-    margin-top: 7px;
+#mission_form #mission_input{
+    display: inline-block;
+    width: 60%;
+    overflow: auto;
 }
 
-#random_action_area{
-    text-align: center;
+#mission_form #points_input{
+    width: 30%;
+    display: inline-block;
 }
 
-.btn{
-    margin: 10px;
+#mission_title{
+    display: inline-block;
+
 }
 
-#timer{
-    font-size: 20px;
-    color: #31b0d5;
-}
 
-#points_for_day{
-    margin-top: 100px;
-}
 
-#actions_ul{
-    /*margin-right: 35px;*/
+    #action_form #add_new_action{
+        margin-top: 7px;
+    }
+
+    #random_action_area{
+        text-align: center;
+    }
+
+    .btn{
+        margin: 10px;
+    }
+
+    #timer{
+        font-size: 20px;
+        color: #31b0d5;
+    }
+
+    #points_for_day{
+        margin-top: 100px;
+    }
+
+    #actions_ul{
+        background-color: whitesmoke;
+        /*padding: 10px;*/
 }
 
 #actions_ul li{
     list-style-type:none;
     box-sizing: border-box;
-    background-color: seashell;
-    box-shadow: 1px 2px 1px rgba(0,0,0,.4);
+    background-color: whitesmoke;
+    margin-left: -32px;
+    padding-right: 20px;
+}
 
+#actions_ul li .action_name_li{
+    display: inline-block;
+    width: 70%;
+    overflow: auto;
 }
 
 #actions_ul li span  {
@@ -138,7 +163,7 @@ nav ul li a:hover{
     position: relative;
 }
 
-#actions_ul li  .fa-trash, .fa-caret-right{
+#actions_ul li  .fa-trash, #actions_ul li .fa-caret-right{
     display: inline-block;
     color: #f44242;
     position: relative;
@@ -148,7 +173,7 @@ nav ul li a:hover{
     cursor: pointer;
 }
 
-.fa-caret-right{
+#actions_ul li .fa-caret-right{
     color: #31b0d5;
     float: left;
     margin-right: 20px;
@@ -176,10 +201,76 @@ nav ul li a:hover{
     display: inline-block;
 }
 
-.alert-zone span#red_alert{
-    color:#fc4646;
-    font-size: 2rem;
+
+#actions_ul li:nth-child(even) {
+    position: relative;
+    background-color: lightblue;
 }
+
+#actions_ul li .action_ratio{
+    display: inline-block;
+    position: absolute;
+    left: 80%;
+    bottom: 5px;
+    height: 100%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+.mission_points{
+    display: inline-block;
+    font-size: 20px;
+}
+
+
+#missions_ul li .mission_name_li{
+    display: inline-block;
+    width: 70%;
+    overflow: auto;
+}
+
+#missions_ul li{
+    list-style-type:none;
+    box-sizing: border-box;
+    background-color: whitesmoke;
+    margin-left: -32px;
+    padding: 10px 20px;
+
+}
+
+#missions_ul li span.mission_li  {
+    padding: 6px;
+    display: block;
+    position: relative;
+}
+
+#missions_ul li  .fa-check, #missions_ul li .fa-trash{
+    display: inline-block;
+    color: #f44242;
+    position: relative;
+    height: 100%;
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+#missions_ul li  .fa-check{
+    color: greenyellow;
+    float: left;
+    margin-right: 20px;
+    font-size: 27px;
+}
+
+/*#mission_ul li .action_ratio{*/
+    /*display: inline-block;*/
+    /*position: absolute;*/
+    /*left: 80%;*/
+    /*bottom: 5px;*/
+    /*height: 100%;*/
+    /*font-size: 20px;*/
+    /*cursor: pointer;*/
+/*}*/
 
 
 

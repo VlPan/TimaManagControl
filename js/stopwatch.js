@@ -19,9 +19,14 @@ var StopWatch = function(elem){
     };
     var timeFormatter = function(timeMillSeconds){
         var time = new Date(timeMillSeconds);
+        var hours = time.getUTCHours().toString();
         var minutes = time.getMinutes().toString();
         var seconds = time.getSeconds().toString();
         var millSeconds = time.getMilliseconds().toString();
+
+        if(hours.length < 2){
+            hours = "0" + hours;
+        }
 
         if(minutes.length < 2){
             minutes = "0" + minutes;
@@ -33,7 +38,7 @@ var StopWatch = function(elem){
             millSeconds = "0" + millSeconds;
         }
 
-        return minutes + " : " + seconds +" . "+ millSeconds;
+        return hours + " . " + minutes + " . " + seconds +" . "+ millSeconds;
     };
 
     this.stop = function(){
@@ -46,7 +51,7 @@ var StopWatch = function(elem){
     this.reset = function(){
 
             time = 0;
-            elem.textContent= "00 : 00 . 000";
+            elem.textContent= "00 . 00 . 00 . 000";
     };
     this.start = function(){
         if(!this.isOn){
